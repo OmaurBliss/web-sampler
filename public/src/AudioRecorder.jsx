@@ -31,8 +31,8 @@ const AudioRecordView = () => {
       </div>
     ) : (
       <div style={{ color: "black" }}>
-      <MicIcon />
-    </div>
+        <MicIcon />
+      </div>
     );
   let stopRecordingIcon =
     status === "stopped" ? (
@@ -53,22 +53,14 @@ const AudioRecordView = () => {
         margin="20px"
         borderRadius="5px"
         padding="20px"
-        style={{boxShadow: "12px 12px 2px 1px lightGrey"}}
+        style={{ boxShadow: "12px 12px 2px 1px lightGrey" }}
       >
         <h1>Web Sampler</h1>{" "}
         <span style={{ flex: "column" }}>
-          <Button
-            style={{ margin: "10px" }}
-            small
-            onClick={startRecording}
-          >
+          <Button style={{ margin: "10px" }} small onClick={startRecording}>
             {startRecordingIcon}
           </Button>
-          <Button
-            style={{ margin: "10px" }}
-            small
-            onClick={stopRecording}
-          >
+          <Button style={{ margin: "10px" }} small onClick={stopRecording}>
             {stopRecordingIcon}
           </Button>
           {/* <p>{statusUpdate}</p> */}
