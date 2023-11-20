@@ -4,11 +4,14 @@ import { Button } from "@material-ui/core";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 
+import TransitionsModal from "./TransitionModal";
+
 // import RecordingButtons from "./RecordingButtons";
 
 // WaveSurfer hook
 const useWavesurfer = (containerRef, options) => {
   const [wavesurfer, setWavesurfer] = useState(null);
+  console.log("container reference", containerRef);
 
   // Initialize wavesurfer when the container mounts
   // or any of the props change
@@ -30,6 +33,7 @@ const useWavesurfer = (containerRef, options) => {
   return wavesurfer;
 };
 
+
 // Create a  React component that will render wavesurfer.
 // Props are wavesurfer options.
 const WaveSurferPlayer = (props, startRecording, stopRecording) => {
@@ -37,30 +41,35 @@ const WaveSurferPlayer = (props, startRecording, stopRecording) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const wavesurfer = useWavesurfer(containerRef, props);
+  console.log(props, "these are props");
+  const blobUrl = props.url || null;
 
   // On play button click
   const onPlayClick = useCallback(() => {
     wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
   }, [wavesurfer]);
 
-  // Initialize wavesurfer when the container mounts
-  // or any of the props change
-  useEffect(() => {
-    if (!wavesurfer) return;
+  const onSaveIconClick =
+    // Initialize wavesurfer when the container mounts
+    // or any of the props change
+    useEffect(() => {
+      if (!wavesurfer) return;
 
-    setCurrentTime(0);
-    setIsPlaying(false);
+      setCurrentTime(0);
+      setIsPlaying(false);
 
-    const subscriptions = [
-      wavesurfer.on("play", () => setIsPlaying(true)),
-      wavesurfer.on("pause", () => setIsPlaying(false)),
-      wavesurfer.on("timeupdate", (currentTime) => setCurrentTime(currentTime)),
-    ];
+      const subscriptions = [
+        wavesurfer.on("play", () => setIsPlaying(true)),
+        wavesurfer.on("pause", () => setIsPlaying(false)),
+        wavesurfer.on("timeupdate", (currentTime) =>
+          setCurrentTime(currentTime)
+        ),
+      ];
 
-    return () => {
-      subscriptions.forEach((unsub) => unsub());
-    };
-  }, [wavesurfer]);
+      return () => {
+        subscriptions.forEach((unsub) => unsub());
+      };
+    }, [wavesurfer]);
 
   return (
     <>
@@ -75,7 +84,26 @@ const WaveSurferPlayer = (props, startRecording, stopRecording) => {
       {/* <p>{statusUpdate}</p> */}
       {/* <RecordingButtons startRecording={startRecording} stopRecording={stopRecording}/> */}
       {/* <p>{currentTime}</p> */}
-      <Button
+      <div style={{flexDirection:"row"}}>
+        {" "}
+        <Button
+          small
+          onClick={onPlayClick}
+          style={{ marginTop: "1em", justifyContent: "center" }}
+        >
+          {isPlaying ? (
+            <div style={{ color: "black" }}>
+              <PauseIcon />
+            </div>
+          ) : (
+            <div style={{ color: "red" }}>
+              <PlayArrowIcon />
+            </div>
+          )}
+        </Button>
+        <TransitionsModal blobUrl={blobUrl} />
+      </div>
+      {/* <Button
         small
         onClick={onPlayClick}
         style={{ marginTop: "1em", justifyContent: "center" }}
@@ -91,6 +119,7 @@ const WaveSurferPlayer = (props, startRecording, stopRecording) => {
           </div>
         )}
       </Button>
+      <TransitionsModal/> */}
 
       {/* <p>Seconds played: {currentTime}</p> */}
     </>
