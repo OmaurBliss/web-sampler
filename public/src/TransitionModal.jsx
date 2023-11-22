@@ -7,8 +7,12 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import SaveIcon from "@mui/icons-material/Save";
 import TextField from "@mui/material/TextField";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
+import { useForm, FormProvider } from "react-hook-form";
 
 const style = {
   position: "absolute",
@@ -24,56 +28,36 @@ const style = {
 
 const TransitionsModal = (props) => {
   const [open, setOpen] = useState(false);
+  // const [name, setName] = useState("");
+  const [textValue, setTextValue] = useState("");
+  const [categoryValue, setCategoryValue] = useState("");
+  const onTextChange = (e) => setTextValue(e.target.value);
+  const handleChange = (e) => setCategoryValue(e.target.value);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const blobUrl = props.blobUrl;
-  const [form, setForm] = useState({
-    name: "",
-    value: blobUrl,
-    category: "",
-  });
-  const newRecord = { ...form };
-  // const newSample = JSON.stringify(newRecord);
-
-  console.log("props child YO", props);
-  // const methods = useForm();
-  // const onSubmit = (data) => console.log(data);
-
-  //   const payload = {
-  //     name: data.name,
-  //     value: data.value,
-  //     category: data.category,
-  //   }
+  const { register, handleSubmit, reset, control } = useForm(); // retrieve all hook methods
+  // console.log(register);
+  // console.log("props child YO", props);
+  console.log(register, handleSubmit);
 
   const saveOnSubmit = () => {
-    let payload = blobUrl;
-    //   axios
-    //     .post("http://localhost:5000/record",{
-    //   name: "patty",
-    //   value: "value",
-    //   category: "misc",
-
-    //     })
-    //     .then((res) => console.log(res, "THIS IS THE RESPONSE"))
-    //     .catch(alert("error in process"))
-    //     .finally(
-    //       setForm({
-    //         name: "",
-    //         value: payload,
-    //         category: "",
-    //       })
-    //     );
-
+    let payload = {
+      name: textValue,
+      value: blobUrl,
+      category: categoryValue,
+    };
     axios({
       method: "post",
       url: "http://localhost:5000/record",
-      data: {
-        name: "Tito sings",
-        value: payload,
-        category: "vocal",
-      },
-    }).then((res) => console.log(res));
+      data: payload,
+    }).then((res) => {
+      console.log(res);
+      console.log(textValue);
+      console.log(categoryValue);
+    });
   };
+
 
   const SelectCategory = () => {
     const categories = [
@@ -97,25 +81,28 @@ const TransitionsModal = (props) => {
 
     return (
       <div style={{ margin: "10px" }}>
-        <TextField
-          select
-          label="Select Category"
-          defaultValue="misc"
-          helperText="Please select category"
-        >
-          {categories.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
+        <FormControl fullWidth>
+          <InputLabel>Sample Type</InputLabel>
+          <Select
+            value={categoryValue}
+            onChange={handleChange}
+            name="category"
+            label="Select Category"
+            defaultValue="misc"
+            // helperText="Please select category"
+          >
+            {categories.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </div>
     );
   };
 
   return (
-    // <FormProvider {...methods}>
-    //   <form>
     <div>
       <Button disabled={!blobUrl} onClick={handleOpen}>
         <SaveIcon style={{ color: !blobUrl ? "grey" : "black" }} />
@@ -138,17 +125,24 @@ const TransitionsModal = (props) => {
             <Typography id="transition-modal-title" variant="h6" component="h2">
               Save Sample
             </Typography>
-            <TextField autoComplete="off" type="text" label="Sample name" />
-            <SelectCategory />
-            <Button onClick={saveOnSubmit}>
-              <Typography>Save Sample</Typography>
-            </Button>
+            <FormProvider>
+              <form onSubmit={handleSubmit(saveOnSubmit)}>
+                <TextField
+                  onChange={onTextChange}
+                  value={textValue}
+                  label="Sample name"
+                />
+                <SelectCategory />
+                <Button type="submit">
+                  <Typography>Save Sample</Typography>
+                </Button>
+              </form>
+            </FormProvider>
           </Box>
         </Fade>
       </Modal>
     </div>
-    // </form>
-    // </FormProvider>
+    //{" "}
   );
 };
 

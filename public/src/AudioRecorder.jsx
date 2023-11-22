@@ -7,6 +7,7 @@ import { Box, Button } from "@material-ui/core";
 // import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import MicIcon from "@mui/icons-material/Mic";
 import StopIcon from "@mui/icons-material/Stop";
+import SampleList from "./SampleList";
 
 const AudioRecordView = () => {
   const { status, startRecording, stopRecording, mediaBlobUrl } =
@@ -71,6 +72,7 @@ const AudioRecordView = () => {
           progressColor="rgb(100, 0, 100)"
           url={mediaBlobUrl}
         />
+        <SampleList/>
       </Box>
       {/* <video src={mediaBlobUrl} controls autoPlay loop /> */}
       <br></br>
