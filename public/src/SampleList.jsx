@@ -20,15 +20,12 @@ const SampleList = () => {
       axios({
         method: "get",
         url: "http://localhost:5000/record",
-      }).then((response) => {
-        // let nameList = response.data;
+      }).then((response) => { 
         setList(response.data);
-        
-        // let objArray = nameList.map((obj)=> console.log(obj))
       });
     };
   console.log(list, "This Is Your List Call YO");
-  console.log(blobValue);
+  console.log("This is your sample",blobValue);
 
 
 
