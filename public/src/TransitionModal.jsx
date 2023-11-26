@@ -41,6 +41,10 @@ const TransitionsModal = (props) => {
   // console.log("props child YO", props);
   console.log(register, handleSubmit);
 
+  // const dataOnSubmit = async (data) => {
+  //   setName(data.name);
+  // };
+
   const saveOnSubmit = () => {
     let payload = {
       name: textValue,

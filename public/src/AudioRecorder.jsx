@@ -72,7 +72,10 @@ const AudioRecordView = () => {
           progressColor="rgb(100, 0, 100)"
           url={mediaBlobUrl}
         />
-        <SampleList/>
+      </Box>
+      <Box>
+        {" "}
+        <SampleList />
       </Box>
       {/* <video src={mediaBlobUrl} controls autoPlay loop /> */}
       <br></br>
