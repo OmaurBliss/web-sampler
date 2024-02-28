@@ -23,13 +23,13 @@ router.get("/:id", async (req, res) => {
 
 // This section will help you create a new record.
 router.post("/", async (req, res) => {
-  let soundObj = {
+  let valueObj = {
     name: req.body.name,
     value: req.body.value,
     category: req.body.category,
   };
   let collection = await db.collection("records");
-  let result = await collection.insertOne(soundObj);
+  let result = await collection.insertOne(valueObj);
   res.send(result).status(204);
 });
 

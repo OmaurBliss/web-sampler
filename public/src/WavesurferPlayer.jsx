@@ -3,7 +3,7 @@ import WaveSurfer from "wavesurfer.js";
 import { Button } from "@material-ui/core";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
-
+import DeleteModal from "./DeleteModal";
 import TransitionsModal from "./TransitionModal";
 
 // import RecordingButtons from "./RecordingButtons";
@@ -12,6 +12,7 @@ import TransitionsModal from "./TransitionModal";
 const useWavesurfer = (containerRef, options) => {
   const [wavesurfer, setWavesurfer] = useState(null);
   console.log("container reference", containerRef);
+  console.log(options.url, "THIS IS OPTIONS")
 
   // Initialize wavesurfer when the container mounts
   // or any of the props change
@@ -41,8 +42,11 @@ const WaveSurferPlayer = (props, startRecording, stopRecording) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const wavesurfer = useWavesurfer(containerRef, props);
-  console.log(props, "these are props");
+  console.log(props, "these are props WAVESURFER PLAYER");
   const blobUrl = props.url || null;
+  const baseId = props.baseId || null;
+  const baseString = props.baseString || null;
+  console.log(baseString,"Base String");
 
   // On play button click
   const onPlayClick = useCallback(() => {
@@ -101,27 +105,9 @@ const WaveSurferPlayer = (props, startRecording, stopRecording) => {
             </div>
           )}
         </Button>
-        <TransitionsModal blobUrl={blobUrl} />
+        <TransitionsModal blobUrl={blobUrl} baseString={baseString}/>
+        <DeleteModal baseId={baseId}/>
       </div>
-      {/* <Button
-        small
-        onClick={onPlayClick}
-        style={{ marginTop: "1em", justifyContent: "center" }}
-        
-      >
-        {isPlaying ? (
-          <div style={{color: "black"}}>
-            <PauseIcon />
-          </div>
-        ) : (
-          <div style={{ color: "red" }}>
-            <PlayArrowIcon />
-          </div>
-        )}
-      </Button>
-      <TransitionsModal/> */}
-
-      {/* <p>Seconds played: {currentTime}</p> */}
     </>
   );
 };

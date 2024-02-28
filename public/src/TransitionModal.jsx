@@ -28,40 +28,36 @@ const style = {
 
 const TransitionsModal = (props) => {
   const [open, setOpen] = useState(false);
-  // const [name, setName] = useState("");
+  const [propState, setPropState] = useState();
+  const [blobState, setBlobState] = useState();
   const [textValue, setTextValue] = useState("");
   const [categoryValue, setCategoryValue] = useState("");
+
   const onTextChange = (e) => setTextValue(e.target.value);
   const handleChange = (e) => setCategoryValue(e.target.value);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const blobUrl = props.blobUrl;
   const { register, handleSubmit, reset, control } = useForm(); // retrieve all hook methods
-  // console.log(register);
-  // console.log("props child YO", props);
-  console.log(register, handleSubmit);
+  const baseData = props.baseString;
+  const blobUrl = props.blobUrl;
 
-  // const dataOnSubmit = async (data) => {
-  //   setName(data.name);
-  // };
+  console.log(typeof baseData, "THIS BASE DATA PROPS YO!!!!");
+  console.log(blobUrl, "THIS is transiiton modal PROPS YO!!!!");
 
-  const saveOnSubmit = () => {
+  const saveOnSubmit = async () => {
     let payload = {
       name: textValue,
-      value: blobUrl,
+      value: baseData,
       category: categoryValue,
     };
-    axios({
+    return axios({
       method: "post",
       url: "http://localhost:5000/record",
       data: payload,
     }).then((res) => {
-      console.log(res);
-      console.log(textValue);
-      console.log(categoryValue);
+      console.log(res, "this is saved response");
     });
   };
-
 
   const SelectCategory = () => {
     const categories = [
@@ -92,7 +88,7 @@ const TransitionsModal = (props) => {
             onChange={handleChange}
             name="category"
             label="Select Category"
-            defaultValue="misc"
+            // defaultValue="value"
             // helperText="Please select category"
           >
             {categories.map((option) => (
@@ -108,8 +104,8 @@ const TransitionsModal = (props) => {
 
   return (
     <div>
-      <Button disabled={!blobUrl} onClick={handleOpen}>
-        <SaveIcon style={{ color: !blobUrl ? "grey" : "black" }} />
+      <Button disabled={!props} onClick={handleOpen}>
+        <SaveIcon style={{ color: !props ? "grey" : "black" }} />
       </Button>
       <Modal
         aria-labelledby="transition-modal-title"

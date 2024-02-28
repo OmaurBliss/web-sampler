@@ -52,13 +52,27 @@ module.exports={
         */
         liveReload: true
     },
+    plugins: [
+        // Work around for Buffer is undefined:
+        // https://github.com/webpack/changelog-v5/issues/10
+        new webpack.ProvidePlugin({
+            Buffer: ['buffer', 'Buffer'],
+        }),
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+        }),
+    ],
     resolve: {
         /** "extensions" 
          * If multiple files share the same name but have different extensions, webpack will 
          * resolve the one with the extension listed first in the array and skip the rest. 
          * This is what enables users to leave off the extension when importing
          */
-        extensions: ['.js','.jsx','.json'] 
+        extensions: ['.js','.jsx','.json'],
+        fallback: {
+            "stream": require.resolve("stream-browserify"),
+            "buffer": require.resolve("buffer")
+        }
     },
     module:{
         /** "rules"
