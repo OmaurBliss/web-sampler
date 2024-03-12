@@ -24,6 +24,7 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  justifyContent: "left",
 };
 
 const TransitionsModal = (props) => {
@@ -54,10 +55,16 @@ const TransitionsModal = (props) => {
       method: "post",
       url: "http://localhost:5000/record",
       data: payload,
-    }).then((res) => {
-      console.log(res, "this is saved response");
-    });
-  };
+    })
+      .then((res) => {
+        console.log(res, "this is saved response");
+        alert("Sample Saved Successfully");
+      })
+      .catch((error) =>
+        console.log(error, "There was an error retrieving records")
+      )
+      .finally(handleClose());
+  }; 
 
   const SelectCategory = () => {
     const categories = [
@@ -80,7 +87,7 @@ const TransitionsModal = (props) => {
     ];
 
     return (
-      <div style={{ margin: "10px" }}>
+      <div>
         <FormControl fullWidth>
           <InputLabel>Sample Type</InputLabel>
           <Select
@@ -122,20 +129,36 @@ const TransitionsModal = (props) => {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
+            <Typography
+              sx={{ marginBottom: "10px", fontSize: "30px" }}
+              id="transition-modal-title"
+              variant="h6"
+              component="h2"
+            >
               Save Sample
             </Typography>
             <FormProvider>
-              <form onSubmit={handleSubmit(saveOnSubmit)}>
+              <form
+                style={{ textAlign: "left" }}
+                onSubmit={handleSubmit(saveOnSubmit)}
+              >
                 <TextField
+                  fullWidth
+                  sx={{ marginBottom: "12px" }}
                   onChange={onTextChange}
                   value={textValue}
                   label="Sample name"
                 />
                 <SelectCategory />
-                <Button type="submit">
-                  <Typography>Save Sample</Typography>
-                </Button>
+                {textValue && categoryValue && (
+                  <Button
+                    sx={{ marginTop: "15px", alignItems: "center" }}
+                    variant="outlined"
+                    type="submit"
+                  >
+                    <Typography>Save Sample</Typography>
+                  </Button>
+                )}
               </form>
             </FormProvider>
           </Box>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useReactMediaRecorder } from "react-media-recorder";
 import PropTypes from "prop-types";
 // import Sampler from "./Sampler";
@@ -9,17 +9,18 @@ import MicIcon from "@mui/icons-material/Mic";
 import StopIcon from "@mui/icons-material/Stop";
 import SampleList from "./SampleList";
 // import SamplePlayer from "./SamplePlayer";
-import SamplePlayerExample from "./SamplePlayerExample";
 import axios from "axios";
+import DeleteModal from "./DeleteModal";
+import TransitionsModal from "./TransitionModal";
 // import VideoRecordView from "./VideoRecorder";
 import { Buffer } from "buffer";
 const AudioRecordView = () => {
   const { status, startRecording, stopRecording, mediaBlobUrl } =
     useReactMediaRecorder({ audio: true });
-    
-    const [urlBlob, setUrlBlob] = useState();
-    const [baseString, setBaseString] = useState();
 
+  const [urlBlob, setUrlBlob] = useState();
+  const [baseString, setBaseString] = useState();
+  const [isVideo, setIsVideo] = useState(false);
 
   const getBase64ToBlob = async () => {
     //converting to base64
@@ -32,7 +33,7 @@ const AudioRecordView = () => {
           "base64"
         );
         setBaseString(resultData);
-        console.log(resultData, "RESULT DATA YO")
+        console.log(resultData, "RESULT DATA YO");
         // const byteCharacters = atob(resultData);
         // const byteArrays = [];
         // for (let i = 0; i < byteCharacters.length; i++) {
@@ -50,7 +51,6 @@ const AudioRecordView = () => {
     // console.log("THIS IS THE BASE64 RESULT", { data: result });
   };
   console.log(typeof baseString, "BASE 64 YO");
-
 
   // let newStopRecording = () => {
   //   stopRecording;
@@ -80,29 +80,58 @@ const AudioRecordView = () => {
         <StopIcon />
       </div>
     );
-    
+
   return (
-    <div>
-      {/* <Box>
-      <VideoRecordView />
+    <div style={{ display: "flex",justifyContent:"center" }}>
+      {/* <Box
+        border="1px white solid"
+        width="800px"
+        margin="20px"
+        borderRadius="5px"
+        padding="20px"
+        style={{
+          boxShadow:
+            "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
+        }}
+      >
+        <h1 style={{ fontFamily: "monospace", marginBottom: "20px" }}>
+          Video Sampler
+        </h1>{" "}
+        <Button style={{ margin: "10px" }} small onClick={startRecording}>
+          {startRecordingIcon}
+        </Button>
+        <Button style={{ margin: "10px" }} small onClick={stopRecording}>
+          {stopRecordingIcon}
+        </Button>
+        <video src={mediaBlobUrl} />
       </Box> */}
       <Box
-        border="3px grey solid"
+        border="1px white solid"
         width="600px"
         margin="20px"
         borderRadius="5px"
         padding="20px"
-        style={{ boxShadow: "12px 12px 2px 1px lightGrey" }}
+        style={{
+          boxShadow:
+            "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
+        }}
       >
-        <h1>Web Sampler</h1>{" "}
-        <span style={{ flex: "column" }}>
-          <Button style={{ margin: "10px" }} small onClick={startRecording}>
+        <h1 style={{ fontFamily: "monospace" }}>Web Sampler</h1>{" "}
+        <div style={{ position: "relative", paddingBottom: "50px" }}>
+          <Button
+            style={{ position: "absolute", left: 0 }}
+            small
+            onClick={startRecording}
+          >
             {startRecordingIcon}
           </Button>
           <Button
-            style={{ margin: "10px" }}
+            style={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
             small
-           
             onClick={stopRecording}
           >
             {stopRecordingIcon}
@@ -112,12 +141,13 @@ const AudioRecordView = () => {
               console.log("clicked");
               getBase64ToBlob();
             }}
-            style={{ border: "1px solid black" }}
+            style={{position: "absolute", right: 0 ,border: "1px solid black",  }}
           >
-            PRESS ME
+            CONVERT
           </Button>
           {/* <p>{statusUpdate}</p> */}
-        </span>
+          {/* <TransitionsModal baseString={baseString} /> */}
+        </div>
         <WaveSurferPlayer
           height={100}
           waveColor="rgb(200, 0, 200)"
@@ -129,12 +159,7 @@ const AudioRecordView = () => {
       <Box>
         {" "}
         <SampleList />
-        <SamplePlayerExample />
       </Box>
-      <audio src={mediaBlobUrl} controls />
-      <audio src={urlBlob} controls />
-      <br></br>
-      {/* <Sampler url={mediaBlobUrl} /> */}
     </div>
   );
 };

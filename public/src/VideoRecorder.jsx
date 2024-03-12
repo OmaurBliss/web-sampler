@@ -15,7 +15,11 @@ const VideoRecordView = () => {
       </Box>
       {/* <button onClick={startRecording}>Start Recording</button>
       <button onClick={stopRecording}>Stop Recording</button> */}
-      <video src={mediaBlobUrl} controls autoPlay loop />
+      {status === "stopped" ? (
+        <video src={mediaBlobUrl} controls autoPlay loop />
+      ) : (
+        <video style={{display:"hidden"}} src={mediaBlobUrl} controls autoPlay loop />
+      )}
     </div>
   );
 };

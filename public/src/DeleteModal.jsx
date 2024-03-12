@@ -48,16 +48,24 @@ export default function DeleteModal(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography
+            sx={{ fontSize: "25px", marginBottom: "20px" }}
+            id="modal-modal-title"
+            component="h1"
+          >
             Are you sure you want to delete this sound?
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Deleting is final.
+          <Typography sx={{ fontSize: "20px", color: "red" }} component="h2">
+            DELETING IS FINAL.
           </Typography>
-          <span>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={deleteListItem}>Delete</Button>
-          </span>
+          <div style={{ margin: "auto", paddingTop: "20px" }}>
+            <Button sx={{marginRight: "20px"}}variant="outlined" onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button variant="outlined" onClick={deleteListItem}>
+              Delete
+            </Button>
+          </div>
         </Box>
       </Modal>
     </div>

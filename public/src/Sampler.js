@@ -25,7 +25,8 @@ const player = new Tone.Player(url).toDestination();
     player.start();
 
   };
-  console.log(player);
+  console.log(typeof player);
+  console.log(player, "This is player data");
 
   const handleSampleLoopPlayerClick = () => {
     if (loopStart >= loopEnd) {
