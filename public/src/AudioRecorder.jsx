@@ -14,6 +14,7 @@ import DeleteModal from "./DeleteModal";
 import TransitionsModal from "./TransitionModal";
 // import VideoRecordView from "./VideoRecorder";
 import { Buffer } from "buffer";
+import SamplePlayer from "./SamplePlayer";
 const AudioRecordView = () => {
   const { status, startRecording, stopRecording, mediaBlobUrl } =
     useReactMediaRecorder({ audio: true });
@@ -82,7 +83,7 @@ const AudioRecordView = () => {
     );
 
   return (
-    <div style={{ display: "flex",justifyContent:"center" }}>
+    <div style={{ display: "flex", justifyContent: "center" }}>
       {/* <Box
         border="1px white solid"
         width="800px"
@@ -141,7 +142,11 @@ const AudioRecordView = () => {
               console.log("clicked");
               getBase64ToBlob();
             }}
-            style={{position: "absolute", right: 0 ,border: "1px solid black",  }}
+            style={{
+              position: "absolute",
+              right: 0,
+              border: "1px solid black",
+            }}
           >
             CONVERT
           </Button>
@@ -159,6 +164,20 @@ const AudioRecordView = () => {
       <Box>
         {" "}
         <SampleList />
+      </Box>
+      <Box
+        border="1px white solid"
+        width="600px"
+        margin="20px"
+        borderRadius="5px"
+        padding="20px"
+        style={{
+          boxShadow:
+            "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
+        }}
+      >
+        {" "}
+        <SamplePlayer />
       </Box>
     </div>
   );
